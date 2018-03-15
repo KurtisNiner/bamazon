@@ -21,7 +21,6 @@ connection.connect(function (err) {
     console.log("                                          ")
     console.log("here are the items that you are able to buy:".green + "\n")
     displayProducts(); //calls the displayProducts function after the connection is accomplished
-
 })
 
 //displays all of the products that are available for purchase
@@ -37,40 +36,41 @@ function displayProducts() {
                 + "quantity left: ".green + res[i].stock_quantity + "\n"
                 + "______________________________________________")
         }
-    })
+      
+        inquirer.prompt([
+            {
+                name: "item",
+                type: "input",
+                message: "choose the item # of the item you would like to buy".blue,
+    
+                //validate makes sure that the number entered is actully a number
 
-    //ask which product a customer wants from an available list
-
-    inquirer.prompt([
-        {
-            type: "input",
-            name: "item_id",
-            message: "choose the item # of the item you would like to buy".blue + "\n\n",
-
-            //validate makes sure that the number entered is actully a number
-
-            validate: function (itemNumber) {
-                if (isNaN(itemNumber) === false) {
-                    return true;
+                validate: function (itemNumber) {
+                    if (isNaN(itemNumber) === false) {
+                        return true;
+                    }
+                    else {
+                        console.log('please choose an actual "number"'.red);
+                        return false;
+                    }
                 }
-                else {
-                    return false;
-                    console.log('please choose an actual "number"'.red);
+            },
+            {
+                name: "quantity",
+                type: "input",
+                message: "how many of this product would you like?".blue,
+    
+                //make sure customer chooses a number
+                validate: function (isNumber) {
+                    if (isNaN(isNumber) === false) {
+                        return true;
+                    }
+                    else {
+                        console.log('please choose an actual "number"'.red);
+                        return false;
+                    };
                 }
             }
-        }
-        //ask how many of the items that the user/shopper wants 
-         
-
-        
-    // .then(function (choice) {
-    //             var chosenItemId = choice.item_id
-    //             console.log(chosenItemId);
-
-    //             if (amountPurchased < res[chosenItemId].stock_quantity) {
-    //                 console.log("you have purchased " + choice.stock_quantity)
-    //             }
-    //         })
+        ])
+    })
 }
-
-
