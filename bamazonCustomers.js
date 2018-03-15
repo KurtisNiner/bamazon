@@ -71,6 +71,29 @@ function displayProducts() {
                     };
                 }
             }
-        ])
+
+            //now take away from inventory and add up cost 
+        ]).then(function(answer){
+            console.log(answer);
+            var itemChosen;
+            var newQuantity = (res[answer.item].stock_quantity - answer.quantity);
+            console.log(newQuantity);
+            connection.query(
+                "UPDATE products SET ? WHERE ?",
+                  {
+                    stock_quantity: newQuantity
+                  },
+                  {
+                    id: answer.item
+                  }
+             
+              );
+    
+            // for(var i = 0; i < results.lenth; i++){
+            //     if (results[i].product_name === answer.item) {
+            //         itemChosen = results[i];
+            //       }
+            // }
+        })
     })
 }
