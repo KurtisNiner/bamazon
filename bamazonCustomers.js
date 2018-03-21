@@ -81,7 +81,9 @@ function displayProducts() {
             for(var i = 0; i < res.lenth; i++){
                 if (res[i].product_name === answer.item) {
                     itemChosen = res[i];
+                    console.log(itemChosen);
                   }
+                  
             var newQuantity = parseInt(itemChosen.stock_quantity) - parseInt(answer.quantity);
             console.log(newQuantity);
             connection.query(
