@@ -4,6 +4,7 @@ var mysql = require("mysql");
 var inquirer = require("inquirer");
 var validator = require("validator");
 var colors = require("colors");
+var table = require("console.table");
 
 
 //declare the connection, username/password, and database
@@ -74,16 +75,14 @@ function displayProducts() {
 
             //now take away from inventory and add up cost 
         ]).then(function(answer){
-            console.log(answer);
+            // console.log(answer);
             var itemChosen;
-            // console.log(answer.quantity);
-            // console.log(answer.item);
-            for(var i = 0; i < results.lenth; i++){
-                if (results[i].product_name === answer.item) {
+           
+            for(var i = 0; i < res.lenth; i++){
+                if (res[i].product_name === answer.item) {
                     itemChosen = res[i];
                   }
-            var newQuantity = (res[answer.item] - [answer.quantity]);
-            
+            var newQuantity = parseInt(itemChosen.stock_quantity) - parseInt(answer.quantity);
             console.log(newQuantity);
             connection.query(
                 "UPDATE products SET ? WHERE ?",
@@ -91,7 +90,7 @@ function displayProducts() {
                     stock_quantity: newQuantity
                   },
                   {
-                    id: answer.item
+                    item_id: answer.item
                   }
              
               );
