@@ -83,7 +83,7 @@ function displayProducts() {
                     itemChosen = res[i];
                     console.log(itemChosen);
                     //for some reason, my code is not taking itemChosen and console logging it, so the rest of the code does not work after. 
-                    //i dont know why, or how to fix it
+                    //i dont know why, or how to fix it.  it may be because the function doesnt know what "answer" is
                   }
             var newQuantity = parseInt(itemChosen.stock_quantity) - parseInt(answer.quantity);
             console.log(newQuantity);
