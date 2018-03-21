@@ -82,8 +82,9 @@ function displayProducts() {
                 if (res[i].product_name === answer.item) {
                     itemChosen = res[i];
                     console.log(itemChosen);
+                    //for some reason, my code is not taking itemChosen and console logging it, so the rest of the code does not work after. 
+                    //i dont know why, or how to fix it
                   }
-                  
             var newQuantity = parseInt(itemChosen.stock_quantity) - parseInt(answer.quantity);
             console.log(newQuantity);
             connection.query(
