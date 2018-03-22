@@ -83,6 +83,8 @@ function displayProducts() {
                                 }
                             }).then(function (answer) {
                                 if (itemChosen.stock_quantity > (parseInt(answer.quantity))) {
+
+                                    // do a connection. query here
                                     var newQuantity = parseInt(itemChosen.stock_quantity) - parseInt(answer.quantity);
                                     console.log(newQuantity);
                                     connection.query(
