@@ -78,7 +78,7 @@ function displayProducts() {
             // console.log(answer);
             var itemChosen;
            
-            for(var i = 0; i < res.lenth; i++){
+            for(var i = 0; i < res.length; i++){
                 if (res[i].product_name === answer.item) {
                     itemChosen = res[i];
                     console.log(itemChosen);
