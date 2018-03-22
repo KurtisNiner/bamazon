@@ -37,13 +37,13 @@ function displayProducts() {
                 + "quantity left: ".green + res[i].stock_quantity + "\n"
                 + "______________________________________________")
         }
-      
-        inquirer.prompt([
+
+        inquirer.prompt(
             {
                 name: "item",
                 type: "input",
                 message: "choose the item # of the item you would like to buy".blue,
-    
+
                 //validate makes sure that the number entered is actully a number
 
                 validate: function (itemNumber) {
@@ -55,50 +55,51 @@ function displayProducts() {
                         return false;
                     }
                 }
-            },
-            {
-                name: "quantity",
-                type: "input",
-                message: "how many of this product would you like?".blue,
-    
-                //make sure customer chooses a number
-                validate: function (isNumber) {
-                    if (isNaN(isNumber) === false) {
-                        return true;
+            }).then(function (answer) {
+                // console.log(answer.item);
+                // console.log(itemChosen);                
+                for (var i = 0; i < res.length; i++) {
+                    // console.log(res[i].item_id);
+                    if (res[i].item_id == answer.item) {
+                        var itemChosen = res[i];
+                        // console.log(itemChosen);
+                        //for some reason, my code is not taking itemChosen and console logging it, so the rest of the code does not work after. 
+                        //i dont know why, or how to fix it.  it may be because the function doesnt know what "answer" is
+                        inquirer.prompt(
+                            {
+                                name: "quantity",
+                                type: "input",
+                                message: "how many ".blue + itemChosen.product_name.green + "'s".green +  " would you like?".blue,
+
+                                //make sure customer chooses a number
+                                validate: function (isNumber) {
+                                    if (isNaN(isNumber) === false) {
+                                        return true;
+                                    }
+                                    else {
+                                        console.log('please choose an actual "number"'.red);
+                                        return false;
+                                    };
+                                }
+                            }).then(function (answer) {
+                                if (itemChosen.stock_quantity > (parseInt(answer.quantity))) {
+                                    var newQuantity = parseInt(itemChosen.stock_quantity) - parseInt(answer.quantity);
+                                    console.log(newQuantity);
+                                    connection.query(
+                                        "UPDATE products SET ? WHERE ?",
+                                        {
+                                            stock_quantity: newQuantity
+                                        },
+                                        {
+                                            item_id: answer.item
+                                        }
+
+                                    );
+                                }
+
+                            })
                     }
-                    else {
-                        console.log('please choose an actual "number"'.red);
-                        return false;
-                    };
                 }
-            }
-
-            //now take away from inventory and add up cost 
-        ]).then(function(answer){
-            // console.log(answer);
-            var itemChosen;
-           
-            for(var i = 0; i < res.length; i++){
-                if (res[i].product_name === answer.item) {
-                    itemChosen = res[i];
-                    console.log(itemChosen);
-                    //for some reason, my code is not taking itemChosen and console logging it, so the rest of the code does not work after. 
-                    //i dont know why, or how to fix it.  it may be because the function doesnt know what "answer" is
-                  }
-            var newQuantity = parseInt(itemChosen.stock_quantity) - parseInt(answer.quantity);
-            console.log(newQuantity);
-            connection.query(
-                "UPDATE products SET ? WHERE ?",
-                  {
-                    stock_quantity: newQuantity
-                  },
-                  {
-                    item_id: answer.item
-                  }
-             
-              );
-
-            }
-        })
+            })
     })
 }
