@@ -69,7 +69,7 @@ function displayProducts() {
                             {
                                 name: "quantity",
                                 type: "input",
-                                message: "how many ".blue + itemChosen.product_name.green + "'s".green +  " would you like?".blue,
+                                message: "how many ".blue + itemChosen.product_name.green + "'s".green + " would you like?".blue,
 
                                 //make sure customer chooses a number
                                 validate: function (isNumber) {
@@ -82,18 +82,28 @@ function displayProducts() {
                                     };
                                 }
                             }).then(function (answer) {
-                                if (itemChosen.stock_quantity > (parseInt(answer.quantity))) {
 
-                                    // do a connection. query here
-                                    var newQuantity = parseInt(itemChosen.stock_quantity) - parseInt(answer.quantity);
-                                    console.log(newQuantity);
-                                    connection.query(
-                                        "UPDATE products SET ? WHERE ?",
-                                        {
-                                            stock_quantity: newQuantity
+                                if (itemChosen.stock_quantity > parseInt(answer.quantity)) {
+                                    // console.log(itemChosen.stock_quantity);
+                                    // console.log(answer.quantity);
+                                    // console.log(itemChosen.item_id)
+                                    // console.log(itemChosen.stock_quantity - answer.quantity);
+                                    // console.log(itemChosen.item_id);
+                                    connection.query("UPDATE products SET ? WHERE ?",
+
+                                        [{
+                                            stock_quantity: itemChosen.stock_quantity - answer.quantity
+                                            
                                         },
                                         {
-                                            item_id: answer.item
+                                            item_id: itemChosen.item_id
+                                        }], function (err, res) {
+                                            if (err) {
+                                                console.log(err);
+                                            }else{
+                                                console.log("congrats you bought " + answer.quantity + "  " + itemChosen.product_name + "'s");
+                                                console.log("you have " + itemChosen.stock_quantity + " " + itemChosen.product_name + "'s left")
+                                            }
                                         }
 
                                     );
