@@ -107,6 +107,8 @@ function displayProducts() {
                                         }
 
                                     );
+                                }else{
+                                    console.log("Insufficient Quantity, please pick less of that that")
                                 }
 
                             })
